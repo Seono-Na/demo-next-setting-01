@@ -144,4 +144,20 @@ export default [
   {
     ignores: [".next", "dist"],
   },
+
+  // app 디렉토리 내부의 default export는 허용
+  {
+    files: ["app/**", "src/app/**"], // 경로는 실제 구조에 맞게 조정
+    rules: {
+      "import/no-default-export": "off",
+    },
+  },
+
+  // App Router의 layout/page 파일은 metadata export가 허용됨
+  {
+    files: ["src/app/**/layout.tsx", "src/app/**/page.tsx"],
+    rules: {
+      "react-refresh/only-export-components": "off",
+    },
+  },
 ];
