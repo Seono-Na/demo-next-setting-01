@@ -1,18 +1,25 @@
-// eslint.config.js
-import js from "@eslint/js";
-import parser from "@typescript-eslint/parser";
-import tsPlugin from "@typescript-eslint/eslint-plugin";
+// ESLint 기본 및 TypeScript 확장 설정 관련
+import js from "@eslint/js"; // ESLint의 기본 JavaScript 룰 세트
+import parser from "@typescript-eslint/parser"; // TypeScript 문법 파싱용 파서
+import tsPlugin from "@typescript-eslint/eslint-plugin"; // TypeScript 전용 룰 제공
 
+// 글로벌 변수 설정 (Node.js, Browser 환경 지원)
 import globals from "globals";
-import importPlugin from "eslint-plugin-import";
-import simpleImportSort from "eslint-plugin-simple-import-sort";
-import unusedImports from "eslint-plugin-unused-imports";
-import onlyWarn from "eslint-plugin-only-warn";
-import prettierPlugin from "eslint-plugin-prettier";
-import reactPlugin from "eslint-plugin-react";
-import reactHooks from "eslint-plugin-react-hooks";
-import tailwindcss from "eslint-plugin-tailwindcss";
-import reactRefresh from "eslint-plugin-react-refresh";
+
+// 코드 품질 및 유지보수 향상 관련 플러그인
+import importPlugin from "eslint-plugin-import"; // import 구문 분석 및 오류 감지
+import simpleImportSort from "eslint-plugin-simple-import-sort"; // import 자동 정렬
+import unusedImports from "eslint-plugin-unused-imports"; // 미사용 import/변수 제거
+import onlyWarn from "eslint-plugin-only-warn"; // 모든 룰을 warning 수준으로 설정
+
+// 코드 스타일 및 포맷팅 관련
+import prettierPlugin from "eslint-plugin-prettier"; // Prettier를 ESLint 룰로 연동
+
+// React 및 관련 기술 스택용 플러그인
+import reactPlugin from "eslint-plugin-react"; // React 전용 룰
+import reactHooks from "eslint-plugin-react-hooks"; // React Hooks 규칙
+import tailwindcss from "eslint-plugin-tailwindcss"; // Tailwind CSS class 검사 및 순서 정렬
+import reactRefresh from "eslint-plugin-react-refresh"; // React Fast Refresh 안정성 보장 (Vite 등에서 사용)
 
 /** @type {import("eslint").Linter.FlatConfig[]} */
 export default [
