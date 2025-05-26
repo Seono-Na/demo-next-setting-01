@@ -1,11 +1,9 @@
-// eslint.config.mjs
-import tseslint from "typescript-eslint";
-import globals from "globals";
-import { FlatCompat } from "@eslint/eslintrc";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
+// eslint.config.js
+import js from "@eslint/js";
+import parser from "@typescript-eslint/parser";
+import tsPlugin from "@typescript-eslint/eslint-plugin";
 
-// 플러그인
+import globals from "globals";
 import importPlugin from "eslint-plugin-import";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import unusedImports from "eslint-plugin-unused-imports";
@@ -16,34 +14,34 @@ import reactHooks from "eslint-plugin-react-hooks";
 import tailwindcss from "eslint-plugin-tailwindcss";
 import reactRefresh from "eslint-plugin-react-refresh";
 
-// __dirname 설정 (ESM 환경)
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+/** @type {import("eslint").Linter.FlatConfig[]} */
+export default [
+  // JavaScript 기본 설정
+  js.configs.recommended,
 
-// 기존 ESLint 설정 호환을 위한 FlatCompat
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-export default tseslint.config(
-  // next/core-web-vitals 규칙을 가장 앞에 삽입
-  ...compat.extends("next/core-web-vitals"),
-
-  // 일반 ignore 설정
-  { ignores: [".next", "dist"] },
-
-  // TypeScript + React + Tailwind 설정
+  // 글로벌 환경 설정
   {
-    files: ["**/*.{ts,tsx}"],
     languageOptions: {
       ecmaVersion: 2020,
+      sourceType: "module",
       globals: {
         ...globals.browser,
         ...globals.node,
       },
     },
+  },
+
+  // TypeScript + React + TailwindCSS
+  {
+    files: ["**/*.{ts,tsx}"],
+    languageOptions: {
+      parser,
+      parserOptions: {
+        project: "./tsconfig.json",
+      },
+    },
     plugins: {
-      // 기본 유틸
+      // 유틸
       "only-warn": onlyWarn,
       prettier: prettierPlugin,
 
@@ -52,11 +50,12 @@ export default tseslint.config(
       "simple-import-sort": simpleImportSort,
       "unused-imports": unusedImports,
 
-      // UI 관련
+      // UI
       react: reactPlugin,
       "react-hooks": reactHooks,
       tailwindcss: tailwindcss,
       "react-refresh": reactRefresh,
+      "@typescript-eslint": tsPlugin,
     },
     rules: {
       // React Hooks
@@ -98,7 +97,7 @@ export default tseslint.config(
       // React Refresh 관련
       "react-refresh/only-export-components": "warn",
 
-      // Prettier 연동
+      // Prettier
       "prettier/prettier": ["warn", {}, { usePrettierrc: true }],
     },
     settings: {
@@ -132,5 +131,10 @@ export default tseslint.config(
     rules: {
       "react-refresh/only-export-components": "off",
     },
-  }
-);
+  },
+
+  // 기본 ignore 설정
+  {
+    ignores: [".next", "dist"],
+  },
+];
